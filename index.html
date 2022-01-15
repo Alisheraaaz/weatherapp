@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <center>
+        <h1>WEATHER UPDATES!</h1>
+        <h2>Enter your city name:</h2>
+        <input type="text" id="cityname">
+        <button onclick="think()"><b>think</b></button>
+        <h1 id="result"></h1>
+    
+
+<script>
+    function think() {
+        let cityname=document.getElementById("cityname").value;
+        var result=document.getElementById("result");
+   
+         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=f030b1b5608ef3a0362bfde5ee47a570&units=metric`)
+        .then(function (response) 
+        { let weatherData = response.data
+            
+            console.log("weatherData: ", weatherData);
+
+           
+             var temp = Number(weatherData?.main?.temp);
+             var minTemp = Number(weatherData?.main?.temp_min);
+             var maxTemp = Number(weatherData?.main?.temp_max);
+    
+        if ((temp < -10) || (minTemp < -10)) {
+          result.innerText="Don't go out it's too cold";
+      } else if (temp > 35 || maxTemp >35) {
+          result.innerText="Don't go outside it's too hot";
+      }else if( (temp>= -10 && temp <= 5) ||
+    
+        (minTemp >= -10 && minTemp <= 5)
+            ) {
+          result.innerText="Carry coat and be carefull";
+      }
+      else if((temp > 5 && temp <= 20) ||
+    //   (mintemp > 5 && mintemp <= 20)){
+         (minTemp > 5 && minTemp <= 20)){
+          result.innerText="Carry jacket with you";
+      } else if(temp > 20 && temp <= 35){
+          result.innerText="Don't carry jacket"
+      }
+            
+    
+    result.innerText += ` - curent temprature is ${temp}'C and its going to be ${minTemp}'C at minimum`
+})
+    .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }</script>
+</body>
+</html>
